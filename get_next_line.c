@@ -90,8 +90,7 @@ static void	create_new_node(int fd, char *buff, ssize_t rd, t_list	**t_char)
 		if (rd == -1)
 		{
 			ft_lstclear(t_char, free);
-			free(buff);
-			return ;
+			break ;
 		}
 		buff[rd] = '\0';
 	}
@@ -101,7 +100,6 @@ static void	create_new_node(int fd, char *buff, ssize_t rd, t_list	**t_char)
 char	*get_next_line(int fd)
 {
 	char			*buffer;
-	char			*new_line;
 	t_list static	*t_char_node;
 	ssize_t			r;
 
@@ -110,11 +108,7 @@ char	*get_next_line(int fd)
 	if (fd >= 0)
 		r = read(fd, buffer, BUFFER_SIZE);
 	if (r == -1)
-	{
 		ft_lstclear(&t_char_node, free);
-		free (buffer);
-		return (NULL);
-	}
 	if ((!buffer || r <= 0 || fd < 0 || BUFFER_SIZE <= 0) && !t_char_node)
 	{
 		free (buffer);
@@ -122,6 +116,5 @@ char	*get_next_line(int fd)
 	}
 	buffer[r] = '\0';
 	create_new_node(fd, buffer, r, &t_char_node);
-	new_line = create_new_line(&t_char_node);
-	return (new_line);
+	return (create_new_line(&t_char_node));
 }
